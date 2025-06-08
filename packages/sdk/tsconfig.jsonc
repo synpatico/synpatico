@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    // This tells TypeScript that the SDK depends on the core package.
+    // Turborepo will use this to build `core` before it builds `sdk`.
+    { "path": "../core" }
+  ]
+}
