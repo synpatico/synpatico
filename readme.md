@@ -20,6 +20,7 @@ The elegance of the Synpatico protocol is that it is gracefully progressive. It 
 1. Flowchart: The First Request (The Learning Phase)
 This flowchart illustrates how both client and server learn the data structure from a standard JSON API call, preparing them for future optimizations.
 
+```mermaid
 sequenceDiagram
     participant ClientApp as Client Application
     participant SynpaticoSDK as Synpatico SDK (Client)
@@ -39,10 +40,12 @@ sequenceDiagram
         ServerAPI->>+SynpaticoSDK_Server: (Async after response)<br>1. Calls protocol.createStructureDefinition().<br>2. Caches structureId & shape.
         SynpaticoSDK_Server-->>-ServerAPI: Caching complete.
     end
+```
 
 4. Flowchart: Subsequent Requests (The Optimization Phase)
 This flowchart shows the highly efficient path for all requests after the first one.
 
+```mermaid
 sequenceDiagram
     participant ClientApp as Client Application
     participant SynpaticoSDK as Synpatico SDK (Client)
@@ -65,6 +68,7 @@ sequenceDiagram
     
     SynpaticoSDK->>+SynpaticoSDK: 1. Receives packet.<br>2. Retrieves cached shape.<br>3. Calls protocol.decode(packet, shape).<br>4. Reconstructs full JSON object.
     SynpaticoSDK-->>-ClientApp: Returns full JSON data.
+```
 
 5. How Synpatico Decreases Bandwidth
 Synpatico achieves its significant bandwidth reduction through its intelligent serialization strategy.
