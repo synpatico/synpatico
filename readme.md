@@ -76,26 +76,6 @@ Synpatico achieves its significant bandwidth reduction through its intelligent s
 Key Elimination
 This is the primary optimization. Instead of sending a full JSON object with verbose, repetitive keys, Synpatico sends a packet containing only the data's values.
 
-Standard JSON Payload (~215 bytes):
-
-```json
-{
-  "users": [
-    { "id": 1, "username": "alice", "status": "active" },
-    { "id": 2, "username": "bob", "status": "inactive" }
-  ]
-}
-```
-
-Synpatico values-only Payload (~85 bytes):
-
-```json
-{
-  "structureId": "L0-...",
-  "values": [1, "alice", "active", 2, "bob", "inactive"]
-}
-```
-
 Standard Keys: A consistent ~37% reduction in payload size.
 
 Descriptive Keys: A reduction of ~60-70% or more.
