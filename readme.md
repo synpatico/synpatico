@@ -78,21 +78,23 @@ This is the primary optimization. Instead of sending a full JSON object with ver
 
 Standard JSON Payload (~215 bytes):
 
+```json
 {
   "users": [
     { "id": 1, "username": "alice", "status": "active" },
     { "id": 2, "username": "bob", "status": "inactive" }
   ]
 }
+```
 
 Synpatico values-only Payload (~85 bytes):
 
+```json
 {
   "structureId": "L0-...",
   "values": [1, "alice", "active", 2, "bob", "inactive"]
 }
-
-As demonstrated by your own tests, this results in significant savings:
+```
 
 Standard Keys: A consistent ~37% reduction in payload size.
 
