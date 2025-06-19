@@ -1,0 +1,76 @@
+{
+  "name": "@synpatico/genome",
+  "version": "1.0.0",
+  "description": "A high-performance protocol and SDK for API optimization that reduces payload size and eliminates over-fetching by synchronizing data structures.",
+  "author": "Michael Sweeney <overthemike@gmail.com>",
+  "type": "module",
+  "source": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "pnpm run clean && pnpm run build:types && pnpm run build:js",
+    "build:types": "tsc --emitDeclarationOnly --declarationMap",
+    "build:js": "tsup ./src/index.ts",
+    "clean": "rm -rf dist",
+    "test": "vitest run",
+    "prepublishOnly": "pnpm run build",
+    "bench": "vitest bench",
+    "coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
+  },
+  "files": [
+    "dist"
+  ],
+  "directories": {
+    "test": "tests"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@types/benchmark": "^2.1.5",
+    "@types/node": "^22.13.14",
+    "@vitest/coverage-v8": "^3.0.9",
+    "@vitest/ui": "^3.0.9",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.3",
+    "vitest": "^3.0.9"
+  },
+  "keywords": [
+    "structure",
+    "shape",
+    "id",
+    "identifier",
+    "generator",
+    "hash",
+    "fingerprint",
+    "signature",
+    "genome",
+    "schema",
+    "compare",
+    "diff",
+    "deduplication",
+    "memoization",
+    "caching",
+    "serialization",
+    "object",
+    "json",
+    "deterministic",
+    "unique",
+    "synpatico",
+    "type"
+  ]
+}

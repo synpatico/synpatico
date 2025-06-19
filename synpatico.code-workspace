@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../protocol/rseasy"
+		},
+		{
+			"path": "../structure-id"
+		},
+		{
+			"path": "../valtio-plugin"
+		}
+	],
+	"settings": {}
+}

@@ -1,4 +1,4 @@
-Synpatico: API Optimization Protocol Summary
+Synpatico is an SDK that automatically reduces API costs. It uses a novel protocol to cut JSON payload sizes by 30-70%, directly lowering your cloud provider bandwidth bills. It also learns what data your frontend actually uses, eliminating over-fetching without the need for a large and complex migration using a tool like GraphQL. And it's all automatic. 
 
 How it Works: Synpatico uses a two-layer optimization strategy:
 

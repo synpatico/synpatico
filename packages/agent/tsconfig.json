@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // This tells TypeScript to use Bun's super-fast types
+    "types": ["bun-types"],
+    // Adding explicit composite flag for monorepo robustness
+    "composite": true
+  },
+  "include": ["src"],
+  "references": [
+    // This line is crucial for VS Code to understand the dependency
+    { "path": "../core" }
+  ]
+}

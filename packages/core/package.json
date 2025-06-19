@@ -1,0 +1,43 @@
+{
+  "name": "@synpatico/core",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Core protocol engine for Synpatico, providing stateless serialization and data structure management.",
+  "author": "Michael Sweeney <overthemike@gmail.com>",
+  "type": "module",
+  "source": "./src/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "pnpm run clean && pnpm run build:types && pnpm run build:js",
+    "build:types": "tsc --emitDeclarationOnly --declarationMap",
+    "build:js": "tsup",
+    "clean": "rm -rf dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@synpatico/genome": "workspace:*",
+    "valtio": "^1.13.2"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  }
+}

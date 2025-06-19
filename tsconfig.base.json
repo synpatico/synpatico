@@ -8,7 +8,11 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "composite": true, // Important for monorepo project references
-    "skipLibCheck": true, 
+    "composite": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@synpatico/*": ["packages/*/src"]
+    }
   }
 }

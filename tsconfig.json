@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.base.json",
   "files": [],
-  "references": [{ "path": "packages/core" }, { "path": "packages/sdk" }]
+  "references": [{ "path": "packages/core" }, { "path": "packages/genome"}]
 }
