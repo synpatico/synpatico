@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // We do not specify a 'rootDir' here to allow imports from sibling packages.
+    "outDir": "dist",
+    "composite": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    // This line is crucial. It tells TypeScript that this client package
+    // depends on the 'core' package, allowing for correct type resolution.
+    { "path": "../core" }
+  ]
+}

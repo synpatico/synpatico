@@ -62,6 +62,19 @@ importers:
         specifier: ^5.4.5
         version: 5.8.3
 
+  packages/client-sdk:
+    dependencies:
+      '@synpatico/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      tsup:
+        specifier: ^8.0.2
+        version: 8.5.0(postcss@8.5.4)(typescript@5.8.3)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.8.3
+
   packages/core:
     dependencies:
       '@synpatico/genome':
@@ -107,19 +120,6 @@ importers:
       vitest:
         specifier: ^3.0.9
         version: 3.2.2(@types/node@22.15.30)(@vitest/ui@3.2.2)
-
-  packages/sdk:
-    dependencies:
-      structure-id:
-        specifier: ^1.2.9
-        version: 1.2.9
-    devDependencies:
-      typescript:
-        specifier: ~5.8.3
-        version: 5.8.3
-      vite:
-        specifier: ^6.3.5
-        version: 6.3.5(@types/node@22.15.30)
 
 packages:
 
@@ -1172,9 +1172,6 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
-
-  structure-id@1.2.9:
-    resolution: {integrity: sha512-JXpm4DZLQqcioH+wooEc3jCFRlwu/pJvemuuNUv37gOWTVzdYgw1khGWPYulMxdkK7rlsi0pIc5gDFTw+pF8+A==}
 
   sucrase@3.35.0:
     resolution: {integrity: sha512-8EbVDiu9iN/nESwxeSxDKe0dunta1GOlHufmSSXxMD2z2/tMZpDMpvXQGsc+ajGo8y2uYUmixaSRUc/QPoQ0GA==}
@@ -2398,8 +2395,6 @@ snapshots:
       min-indent: 1.0.1
 
   strip-json-comments@3.1.1: {}
-
-  structure-id@1.2.9: {}
 
   sucrase@3.35.0:
     dependencies:

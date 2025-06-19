@@ -23,7 +23,7 @@
   "scripts": {
     "build": "pnpm run clean && pnpm run build:types && pnpm run build:js",
     "build:types": "tsc --emitDeclarationOnly --declarationMap",
-    "build:js": "tsup ./src/index.ts",
+    "build:js": "tsup",
     "clean": "rm -rf dist",
     "test": "vitest run",
     "prepublishOnly": "pnpm run build",

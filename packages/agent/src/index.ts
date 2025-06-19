@@ -27,25 +27,15 @@ const agentPlugin: FastifyPluginAsync = async (fastify: FastifyInstance) => {
 
   // This hook runs for every request. It handles the "optimized path".
   fastify.addHook('onRequest', async (request, reply) => {
-    // PART 1: Handle Incoming OPTIMIZED REQUESTS (POST/PUT)
+    // [REMOVED] PART 1: The logic for handling incoming optimized POST/PUT
+    // requests is temporarily removed to simplify and stabilize the agent.
+    /*
     if (request.headers['content-type'] === 'application/synpatico-packet+json') {
-      fastify.log.info(`Received an optimized request packet for path: ${request.url}`);
-      const packet = request.body as StructurePacket;
-      const structureDef = serverStructureCache.get(packet.structureId);
-
-      if (!structureDef) {
-        fastify.log.error(`State Conflict: Received optimized request for unknown structure ID: ${packet.structureId}`);
-        reply.code(409).send({ error: 'State Conflict' });
-        return reply;
-      }
-
-      request.body = decode(packet, structureDef);
-      request.headers['content-type'] = 'application/json';
-      return; 
+      // ... logic for decoding incoming requests ...
     }
+    */
 
     // PART 2: Handle Outgoing OPTIMIZED RESPONSES (GET)
-    // [MODIFIED] Using the new, branded header name.
     const acceptedStructureId = request.headers['x-synpatico-accept-id'] as string | undefined;
 
     if (acceptedStructureId && serverStructureCache.has(acceptedStructureId)) {
@@ -67,7 +57,6 @@ const agentPlugin: FastifyPluginAsync = async (fastify: FastifyInstance) => {
             reply
               .code(200)
               .header('Content-Type', 'application/synpatico-packet+json')
-              // [MODIFIED] Using the new, branded header name in the response.
               .header('X-Synpatico-ID', acceptedStructureId)
               .send(optimizedPacket);
             return reply;
@@ -91,27 +80,30 @@ const agentPlugin: FastifyPluginAsync = async (fastify: FastifyInstance) => {
       
       const forwardedHeaders = new Headers();
       for (const key in request.headers) {
-        if (key.toLowerCase() !== 'host' && request.headers[key]) {
+        if (!['host', 'content-length'].includes(key.toLowerCase()) && request.headers[key]) {
           forwardedHeaders.set(key, request.headers[key] as string);
         }
       }
       forwardedHeaders.set('x-api-key', UPSTREAM_API_KEY);
 
+      const body = (request.method !== 'GET' && request.method !== 'HEAD' && request.body)
+        ? JSON.stringify(request.body)
+        : undefined;
+
       const upstreamResponse = await fetch(upstreamUrl, {
         method: request.method,
         headers: forwardedHeaders,
-        body: (request.method !== 'GET' && request.method !== 'HEAD') ? (request.body as BodyInit) : undefined,
+        body: body,
       });
 
+      // --- Learning Step ---
       const responseBodyText = await upstreamResponse.text();
       
-      // Learning Step
       try {
         if (upstreamResponse.headers.get('content-type')?.includes('application/json')) {
             const jsonData = JSON.parse(responseBodyText);
             if (typeof jsonData === 'object' && jsonData !== null && !Array.isArray(jsonData)) {
               const structureDef = createStructureDefinition(jsonData);
-              // Log the generated ID so you can use it in the next request.
               fastify.log.info(`Learned and cached new structure [${structureDef.id}] for path: ${request.url}`);
               serverStructureCache.set(structureDef.id, structureDef);
             }
