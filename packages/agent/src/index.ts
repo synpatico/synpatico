@@ -27,14 +27,6 @@ const agentPlugin: FastifyPluginAsync = async (fastify: FastifyInstance) => {
 
   // This hook runs for every request. It handles the "optimized path".
   fastify.addHook('onRequest', async (request, reply) => {
-    // [REMOVED] PART 1: The logic for handling incoming optimized POST/PUT
-    // requests is temporarily removed to simplify and stabilize the agent.
-    /*
-    if (request.headers['content-type'] === 'application/synpatico-packet+json') {
-      // ... logic for decoding incoming requests ...
-    }
-    */
-
     // PART 2: Handle Outgoing OPTIMIZED RESPONSES (GET)
     const acceptedStructureId = request.headers['x-synpatico-accept-id'] as string | undefined;
 
@@ -53,6 +45,14 @@ const agentPlugin: FastifyPluginAsync = async (fastify: FastifyInstance) => {
 
         const freshData = await upstreamResponse.json();
         if (typeof freshData === 'object' && freshData !== null && !Array.isArray(freshData)) {
+          // Get the cached structure definition to validate against
+          const cachedStructureDef = serverStructureCache.get(acceptedStructureId);
+          
+          // Verify the fresh data matches the expected structure
+          const freshStructureDef = createStructureDefinition(freshData);
+          
+          if (cachedStructureDef && freshStructureDef.id === acceptedStructureId) {
+            // Structure matches, safe to optimize
             const optimizedPacket = encode(freshData, { knownStructureId: acceptedStructureId });
             reply
               .code(200)
@@ -60,12 +60,20 @@ const agentPlugin: FastifyPluginAsync = async (fastify: FastifyInstance) => {
               .header('X-Synpatico-ID', acceptedStructureId)
               .send(optimizedPacket);
             return reply;
-        } else {
+          } else {
+            // Structure mismatch, fall back to normal JSON
+            fastify.log.warn(`Structure mismatch for ID: ${acceptedStructureId}. Expected: ${acceptedStructureId}, Got: ${freshStructureDef.id}. Falling back to JSON.`);
             reply.send(freshData);
             return reply;
+          }
+        } else {
+          reply.send(freshData);
+          return reply;
         }
       } catch (error) {
         fastify.log.error(error, `Failed to process optimized request for structure ID: ${acceptedStructureId}`);
+        // Fall back to normal processing instead of throwing
+        // Let the request continue to the catch-all handler
       }
     } else if (acceptedStructureId) {
       fastify.log.warn(`Cache MISS for structure ID: ${acceptedStructureId}. Passing through.`);
@@ -104,7 +112,7 @@ const agentPlugin: FastifyPluginAsync = async (fastify: FastifyInstance) => {
             const jsonData = JSON.parse(responseBodyText);
             if (typeof jsonData === 'object' && jsonData !== null && !Array.isArray(jsonData)) {
               const structureDef = createStructureDefinition(jsonData);
-              fastify.log.info(`Learned and cached new structure [${structureDef.id}] for path: ${request.url}`);
+              fastify.log.info(`Learned and cached new structure: ${structureDef.id}`);
               serverStructureCache.set(structureDef.id, structureDef);
             }
         }

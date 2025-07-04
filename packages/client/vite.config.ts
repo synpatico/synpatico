@@ -4,7 +4,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: './src/index.ts',
-      name: '@synpatico/client-sdk',
+      name: '@synpatico/client',
       fileName: 'client',
     },
   },

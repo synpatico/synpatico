@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "bun run src/index.ts",
-    "dev": "bun --watch src/index.ts"
+    "dev": "bun --watch src/index.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@fastify/http-proxy": "^9.4.0",
